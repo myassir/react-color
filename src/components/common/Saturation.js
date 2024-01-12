@@ -2,6 +2,7 @@ import React, { Component, PureComponent } from 'react'
 import reactCSS from 'reactcss'
 import throttle from 'lodash/throttle'
 import * as saturation from '../../helpers/saturation'
+import * as windowHelpers from '../../helpers/windowHelpers'
 
 export class Saturation extends (PureComponent || Component) {
   constructor(props) {
@@ -17,15 +18,6 @@ export class Saturation extends (PureComponent || Component) {
     this.unbindEventListeners()
   }
 
-  getContainerRenderWindow() {
-    const { container } = this
-    let renderWindow = window
-    while (!renderWindow.document.contains(container) && renderWindow.parent !== renderWindow) {
-      renderWindow = renderWindow.parent
-    }
-    return renderWindow
-  }
-
   handleChange = (e) => {
     typeof this.props.onChange === 'function' && this.throttle(
       this.props.onChange,
@@ -36,7 +28,7 @@ export class Saturation extends (PureComponent || Component) {
 
   handleMouseDown = (e) => {
     this.handleChange(e)
-    const renderWindow = this.getContainerRenderWindow()
+    const renderWindow = windowHelpers.getContainerRenderWindow(this.container)
     renderWindow.addEventListener('mousemove', this.handleChange)
     renderWindow.addEventListener('mouseup', this.handleMouseUp)
   }
@@ -46,7 +38,7 @@ export class Saturation extends (PureComponent || Component) {
   }
 
   unbindEventListeners() {
-    const renderWindow = this.getContainerRenderWindow()
+    const renderWindow = windowHelpers.getContainerRenderWindow(this.container)
     renderWindow.removeEventListener('mousemove', this.handleChange)
     renderWindow.removeEventListener('mouseup', this.handleMouseUp)
   }

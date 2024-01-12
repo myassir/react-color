@@ -1,9 +1,14 @@
+import * as windowHelpers from './windowHelpers'
+
 export const calculateChange = (e, hsl, container) => {
   const { width: containerWidth, height: containerHeight } = container.getBoundingClientRect()
+  const renderWindow = windowHelpers.getContainerRenderWindow(container)
+
   const x = typeof e.pageX === 'number' ? e.pageX : e.touches[0].pageX
   const y = typeof e.pageY === 'number' ? e.pageY : e.touches[0].pageY
-  let left = x - (container.getBoundingClientRect().left + window.pageXOffset)
-  let top = y - (container.getBoundingClientRect().top + window.pageYOffset)
+
+  let left = x - (container.getBoundingClientRect().left + renderWindow.pageXOffset)
+  let top = y - (container.getBoundingClientRect().top + renderWindow.pageYOffset)
 
   if (left < 0) {
     left = 0

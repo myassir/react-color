@@ -1,6 +1,7 @@
 import React, { Component, PureComponent } from 'react'
 import reactCSS from 'reactcss'
 import * as alpha from '../../helpers/alpha'
+import * as windowHelpers from '../../helpers/windowHelpers'
 
 import Checkboard from './Checkboard'
 
@@ -16,8 +17,9 @@ export class Alpha extends (PureComponent || Component) {
 
   handleMouseDown = (e) => {
     this.handleChange(e)
-    window.addEventListener('mousemove', this.handleChange)
-    window.addEventListener('mouseup', this.handleMouseUp)
+    const renderWindow = windowHelpers.getContainerRenderWindow(this.container)
+    renderWindow.addEventListener('mousemove', this.handleChange)
+    renderWindow.addEventListener('mouseup', this.handleMouseUp)
   }
 
   handleMouseUp = () => {
@@ -25,8 +27,9 @@ export class Alpha extends (PureComponent || Component) {
   }
 
   unbindEventListeners = () => {
-    window.removeEventListener('mousemove', this.handleChange)
-    window.removeEventListener('mouseup', this.handleMouseUp)
+    const renderWindow = windowHelpers.getContainerRenderWindow(this.container)
+    renderWindow.removeEventListener('mousemove', this.handleChange)
+    renderWindow.removeEventListener('mouseup', this.handleMouseUp)
   }
 
   render() {
